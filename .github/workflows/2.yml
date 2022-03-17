@@ -1,0 +1,48 @@
+name: areas-of-shapes
+
+on:
+  push:
+    branches: [ 'main' ]
+    paths:
+      - 'movie/**'
+  pull_request:
+    branches: [ 'main' ]
+    paths:
+      - 'movie/**'
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: test_db        
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      NODE_ENV: test
+      TEST_DB_URL: postgres://postgres:postgres@0.0.0.0:5432/test_db
+      JWT_SECRET: somethingsecret
+
+    strategy:
+      matrix:
+        node-version: [10.x]
+
+    steps:
+    - name: checkout
+      uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: cd movie && npm install && npm run test
