@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [master, dev]
+    paths:
+      - 'movie/**'
+  pull_request:
+    branches: [master, dev]
+    paths:
+      - 'movie/**'
+
+jobs:
+  integration-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+    services:
+      test_db:
+        image:  postgres:13.0-alpine
+        env:
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: test
+        ports:
+          - 5432:5432
+        
+    steps:
+      - uses: actions/checkout@v2
+      - run: cd movie && npm install && npm run test
+        env: 
+          JWT_SECRET: test
+          HOST: localhost
+          USER: user
+          PASSWORD: password
+          TEST_DB: test
+          DIALECT: postgres
