@@ -1,19 +1,23 @@
 const jwt = require("jsonwebtoken");
 const request = require('supertest');
+const jest = require('jest');
 const app = require('../../server');
 const Movie = require('../../models').Movie;
 const MovieCreateTrack = require('../../models').MovieCreateTrack;
 
 describe('Movie Endpoint', () => {
+    beforeEach(() => {
+      jest.setTimeout(10000);
+    });
     afterEach(async () => { 
         await Movie.destroy({
             where: {},
             truncate: true
         })
-        // await MovieCreateTrack.destroy({
-        //     where: {},
-        //     truncate: true
-        // })
+        await MovieCreateTrack.destroy({
+            where: {},
+            truncate: true
+        })
     });
     describe('Create Movie /post', () => {
       let token; 
@@ -46,13 +50,13 @@ describe('Movie Endpoint', () => {
         );
       });
 
-      // it('should return 401 if user is not logged in', async () => {
-      //   token = ''; 
+      it('should return 401 if user is not logged in', async () => {
+        token = ''; 
   
-      //   const res = await exec();
+        const res = await exec();
   
-      //   expect(res.status).toBe(401);
-      // });
+        expect(res.status).toBe(401);
+      });
 
   
       it('should return 400 if title is not provided', async () => {
