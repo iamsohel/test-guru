@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
 const request = require('supertest');
-const jest = require('jest');
 const app = require('../../server');
 const Movie = require('../../models').Movie;
 const MovieCreateTrack = require('../../models').MovieCreateTrack;
