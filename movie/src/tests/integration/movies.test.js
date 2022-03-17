@@ -6,17 +6,17 @@ const MovieCreateTrack = require('../../models').MovieCreateTrack;
 
 describe('Movie Endpoint', () => {
     beforeEach(() => {
-      jest.setTimeout(10000);
+      jest.setTimeout(100000);
     });
     afterEach(async () => { 
         await Movie.destroy({
             where: {},
             truncate: true
         })
-        // await MovieCreateTrack.destroy({
-        //     where: {},
-        //     truncate: true
-        // })
+        await MovieCreateTrack.destroy({
+            where: {},
+            truncate: true
+        })
     });
     describe('Create Movie /post', () => {
       let token; 
