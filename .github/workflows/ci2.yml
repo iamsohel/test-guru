@@ -2,12 +2,12 @@ name: movie-svc
 
 on:
   push:
-    branches: [master, dev, develop]
+    branches: [master, dev, develop, main]
     paths:
       - 'movie/**'
 
   pull_request:
-    branches: [master, dev, develop]
+    branches: [master, dev, main]
     paths:
       - 'movie/**'
 
@@ -16,4 +16,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: cd movie && npm install && npm run test:ci
+      - run: cd movie && npm install && npm run test
