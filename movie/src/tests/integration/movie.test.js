@@ -1,20 +1,31 @@
-const jwt = require("jsonwebtoken");
+const { MongoMemoryServer } = require('mongodb-memory-server');
+const mongoose = require('mongoose');
 const request = require('supertest');
+const jwt = require("jsonwebtoken");
 const app = require('../../server');
-const Movie = require('../../models').Movie;
-const MovieCreateTrack = require('../../models').MovieCreateTrack;
 
 describe('Movie Endpoint', () => {
-    afterEach(async () => { 
-        await Movie.destroy({
-            where: {},
-            truncate: true
-        })
-        await MovieCreateTrack.destroy({
-            where: {},
-            truncate: true
-        })
+    let mongo;
+    beforeAll( async () => {
+        process.env.JWT_SECRET = 'SECRET';
+        mongo = await MongoMemoryServer.create();
+        const mongoUri = mongo.getUri()
+        await mongoose.connect(mongoUri);
     });
+
+    beforeEach(async () => {
+        const collections = await mongoose.connection.db.collections();
+
+        for (let collection of collections) {
+            await collection.deleteMany({});
+        }
+    });
+
+    afterAll( async () => {
+        await mongo.stop();
+        await mongoose.connection.close();
+    });
+
     describe('Create Movie /post', () => {
       let token; 
       let title; 
@@ -29,7 +40,7 @@ describe('Movie Endpoint', () => {
       beforeEach(() => {
         let user = {
           id: 1,
-          name: 'test'
+          name: 'Test'
         }
         token =  jwt.sign(
           {
@@ -64,15 +75,15 @@ describe('Movie Endpoint', () => {
       });
   
       it('should create a new movie with valid data', async () => {
-        title = 'test'
+        title = 'Test'
         const res = await exec();
       
         expect(res.status).toEqual(201);
-        expect(res.body).toHaveProperty('title', 'test');
+        expect(res.body).toHaveProperty('title', 'Test');
       });
 
       it('should return 400 as basic user cannot create more than 5 movie a month', async () => {
-        title = 'test'
+        title = 'Test'
         const res = await exec();
         const res2 = await exec();
         const res3 = await exec();
@@ -81,7 +92,6 @@ describe('Movie Endpoint', () => {
         const res6 = await exec();
       
         expect(res6.status).toEqual(400);
-        expect(res.body).toHaveProperty('title', 'test');
       });
     });
 
@@ -106,7 +116,7 @@ describe('Movie Endpoint', () => {
       beforeEach(() => {
         let user = {
           id: 1,
-          name: 'test'
+          name: 'Test'
         }
         token =  jwt.sign(
           {
@@ -124,14 +134,14 @@ describe('Movie Endpoint', () => {
       });
 
       it('should return all movie of a user', async () => {
-        title = 'test'
+        title = 'Test'
         await exec();
   
         const res = await fetch();;
         
         expect(res.status).toBe(200);
         expect(res.body.length).toBe(1);
-        expect(res.body.some(m => m.title === 'test')).toBeTruthy();
+        expect(res.body.some(m => m.title === 'Test')).toBeTruthy();
       });
     });
 })
