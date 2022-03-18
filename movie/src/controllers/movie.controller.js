@@ -65,8 +65,9 @@ exports.findAll = async (req, res) => {
 
 async function checkMovieCreateDataRecord(userId, currentMonth, currentYear){
   let checkTrachDataExist = await MovieCreateTrack.findOne({ where: { month: currentMonth, year: currentYear, userId: userId  } }).exec();;
-      if(checkTrachDataExist){
-        await MovieCreateTrack.findOneAndUpdate({_id :checkTrachDataExist._id}, {$inc : {'checkTrachDataExist.count' : 1}}).exec();
+    console.log(checkTrachDataExist)    
+  if(checkTrachDataExist){
+        await MovieCreateTrack.findOneAndUpdate({_id :checkTrachDataExist._id}, {$inc : {count : 1}}).exec();
       } else {
         const movieCreateTrackData = new MovieCreateTrack({
           month: currentMonth,

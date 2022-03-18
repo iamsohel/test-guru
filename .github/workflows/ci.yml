@@ -1,4 +1,4 @@
-name: movie-svc
+name: movie-svc-ci
 
 on:
   push:
