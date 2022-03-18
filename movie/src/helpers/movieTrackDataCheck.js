@@ -1,4 +1,4 @@
-const { MovieCreateTrack } = require('../models/movieCreateTrack');
+const { MovieCreateTrack } = require('../models/movieCreateTrack.model');
 
 const checkMonthlyMovieCreateAccess = async (userId, currentMonth, currentYear) => {
     let checkTrachDataExist = await MovieCreateTrack.findOne({ where: { month: currentMonth, year: currentYear, userId: userId  } }).exec();;

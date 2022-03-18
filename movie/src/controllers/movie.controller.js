@@ -1,7 +1,7 @@
 const axios = require('axios');
 const { checkMonthlyMovieCreateAccess } = require("../helpers/movieTrackDataCheck")
-const { Movie } = require('../models/movie');
-const { MovieCreateTrack } = require('../models/movieCreateTrack');
+const { Movie } = require('../models/movie.model');
+const { MovieCreateTrack } = require('../models/movieCreateTrack.model');
 
 exports.create = async (req, res) => {
   let currentMonth = new Date().getMonth() + 1;
@@ -74,8 +74,6 @@ async function checkMovieCreateDataRecord(userId, currentMonth, currentYear){
           count: 1,
           userId: userId
         });
-        console.log(movieCreateTrackData)
         let d = await movieCreateTrackData.save()
-        console.log(d)
       }
 }
