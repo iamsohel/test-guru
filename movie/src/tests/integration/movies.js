@@ -6,7 +6,7 @@ const MovieCreateTrack = require('../../models').MovieCreateTrack;
 
 describe('Movie Endpoint', () => {
     beforeEach(() => {
-      jest.setTimeout(100000);
+      jest.setTimeout(10000);
     });
     afterEach(async () => { 
         await Movie.destroy({

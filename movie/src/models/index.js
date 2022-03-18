@@ -10,7 +10,9 @@ const db = {};
 let sequelize;
 
 if(env === 'test'){
-  sequelize = new Sequelize(config.db_url , {dialect: config.dialect})
+  sequelize = new Sequelize(config.db_url , {
+    dialect: config.dialect
+  })
 } else {
   sequelize = new Sequelize(config.DB, config.USER, config.PASSWORD, {
     host: config.HOST,
