@@ -58,7 +58,7 @@ describe('Movie Endpoint', () => {
       });
 
   
-      it('should return 400 if title is not provided', async () => {
+      it('should return 400 if title is not provideds', async () => {
         title = ''; 
         
         const res = await exec();
