@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "test": "cross-env NODE_ENV=test jest --verbose  --watchAll --no-cache --runInBand --detectOpenHandles --testTimeout=600000",
-    "test:ci": "jest",
+    "test:ci": "cross-env NODE_ENV=test jest --testTimeout=600000",
     "dev": "nodemon ./src/index.js",
     "start": "node ./src/index.js"
   },
